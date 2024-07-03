@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "main": "./dist/main.js",
+  "scripts": {
+    "watch": "tsc --watch",
+    "build": "tsc",
+    "start": "electron .",
+    "start:scriptonly": "node ./dist/index.js",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "typescript": "^4.7.2"
+  }
+}
