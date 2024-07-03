@@ -8,7 +8,9 @@
 // - Video reencoding
 // - Video cropping
 
+import { path } from '@ffmpeg-installer/ffmpeg';
 import * as ffmpeg from 'fluent-ffmpeg';
+ffmpeg.setFfmpegPath(path);
 
 export function encodeVideo(file: string, output: string, onComplete?: () => void) {
     const startTime = Date.now();
