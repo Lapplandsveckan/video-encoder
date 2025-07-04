@@ -1,3 +1,5 @@
+import * as electron from 'electron';
+
 export {};
 
 declare global {
@@ -81,8 +83,13 @@ window.electron.on('encode-cancelled', (event: any, filePath: string) => {
     fileToElement.delete(filePath);
 });
 
+window.electron.on('app-error', (event: any, error: { message: string; stack?: string }) => {
+    console.error(`[App Error] ${error.message}`)
+    if (error.stack) console.error(error.stack);
+});
+
 function basename(filePath: string): string {
-    return filePath.split('/').pop() || filePath;
+    return filePath.split(/[\\/]/).pop() || filePath;
 }
 
 function handleFiles(files: string[]) {

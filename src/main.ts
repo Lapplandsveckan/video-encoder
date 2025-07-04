@@ -30,3 +30,23 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err)
+    sendErrorToRenderer(err)
+})
+
+process.on('unhandledRejection', (reason) => {
+    console.error('Unhandled Rejection:', reason)
+    sendErrorToRenderer(reason instanceof Error ? reason : new Error(String(reason)))
+})
+
+function sendErrorToRenderer(error: Error) {
+    const allWindows = BrowserWindow.getAllWindows()
+    for (const win of allWindows) {
+        win.webContents.send('app-error', {
+            message: error.message,
+            stack: error.stack,
+        })
+    }
+}
