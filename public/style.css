@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+h1 {
+    margin-bottom: 1rem;
+}
+
+#dropZone {
+    border: 3px dashed #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+#dropZone.dragover {
+    border-color: #1db954;
+    color: #1db954;
+    background-color: #222;
+}
+
+#videoList {
+    width: 80%;
+    max-width: 600px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#videoList li {
+    background: #222;
+    margin-bottom: 0.5rem;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    overflow-wrap: break-word;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#videoList li div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#videoList li span.progress {
+    color: #1db954;
+    font-weight: bold;
+}
+
+#videoList li span.time {
+    margin-left: 20px;
+
+    color: #bbb;
+    font-size: 0.85rem;
+}
+
+
+#videoList li button {
+    background: #e63946;
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    margin-left: 20px;
+}
+
+#videoList li button:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+#videoList li button:hover:not(:disabled) {
+    background: #d62828;
+}

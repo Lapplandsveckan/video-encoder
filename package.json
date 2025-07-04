@@ -3,15 +3,40 @@
   "main": "./dist/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts"
+    "postbuild": "electron-builder",
+    "dev": "electron .",
+    "start": "yarn build && electron ."
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "electron": "^37.2.0",
     "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
+    "electron-builder": "^26.0.12",
     "ts-node": "^10.9.2",
     "typescript": "^4.7.2"
+  },
+  "build": {
+    "appId": "com.sundstroem.videoencoder",
+    "files": [
+      "dist/**/*",
+      "public/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "extraResources": [],
+    "asar": true,
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
