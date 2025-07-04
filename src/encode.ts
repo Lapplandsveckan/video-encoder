@@ -1,8 +1,10 @@
-import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
 import { ipcMain } from 'electron';
+import * as ffmpegPath from 'ffmpeg-static'
 import * as ffmpeg from 'fluent-ffmpeg';
 import * as path from 'path';
 import * as fs from 'fs';
+
+if (!ffmpegPath) throw new Error("FFmpeg binary not found")
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const runningEncodes = new Map<string, ffmpeg.FfmpegCommand>();
