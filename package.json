@@ -1,4 +1,8 @@
 {
+  "name": "video-encoder",
+  "version": "1.0.0",
+  "description": "A simple Electron-based video encoder",
+  "author": "Eliyah Sundström",
   "private": true,
   "main": "./dist/main.js",
   "scripts": {
@@ -9,17 +13,18 @@
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
-    "electron": "^37.2.0",
     "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
+    "electron": "^37.2.0",
     "electron-builder": "^26.0.12",
     "ts-node": "^10.9.2",
     "typescript": "^4.7.2"
   },
   "build": {
     "appId": "com.sundstroem.videoencoder",
+    "productName": "Video Encoder",
     "files": [
       "dist/**/*",
       "public/**/*"
@@ -27,8 +32,8 @@
     "directories": {
       "buildResources": "assets"
     },
-    "extraResources": [],
     "asar": true,
+    "extraResources": [],
     "win": {
       "target": "nsis"
     },
