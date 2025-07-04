@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import {BrowserWindow, ipcMain} from 'electron';
 import * as ffmpegPath from 'ffmpeg-static'
 import * as ffmpeg from 'fluent-ffmpeg';
 import * as path from 'path';
@@ -43,7 +43,7 @@ export function encodeVideo(file: string, output: string, onProgress: (progress:
             onProgress(progress.percent, duration);
         })
         .on('error', (err, stdout, stderr) => {
-            // handle... if not killed
+            sendErrorToRenderer(new Error(`FFmpeg error: ${err.message}\nSTDOUT: ${stdout}\nSTDERR: ${stderr}`));
         })
         .run();
 
@@ -99,3 +99,13 @@ ipcMain.on('cancel-encode', (event, filePath: string) => {
         event.sender.send('encode-cancelled', filePath);
     }
 });
+
+function sendErrorToRenderer(error: Error) {
+    const allWindows = BrowserWindow.getAllWindows()
+    for (const win of allWindows) {
+        win.webContents.send('app-error', {
+            message: error.message,
+            stack: error.stack,
+        })
+    }
+}
