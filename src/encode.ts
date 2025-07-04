@@ -1,11 +1,19 @@
-import {BrowserWindow, ipcMain} from 'electron';
+import {app, BrowserWindow, ipcMain} from 'electron';
 import * as ffmpegPath from 'ffmpeg-static'
 import * as ffmpeg from 'fluent-ffmpeg';
 import * as path from 'path';
 import * as fs from 'fs';
 
-if (!ffmpegPath) throw new Error("FFmpeg binary not found")
-ffmpeg.setFfmpegPath(ffmpegPath);
+function getSafeFfmpegPath(): string {
+    if (!ffmpegPath) throw new Error('FFmpeg path is undefined')
+
+    const path = ffmpegPath as any;
+    if (app.isPackaged) return path.replace('app.asar', 'app.asar.unpacked');
+
+    return path;
+}
+
+ffmpeg.setFfmpegPath(getSafeFfmpegPath());
 
 const runningEncodes = new Map<string, ffmpeg.FfmpegCommand>();
 export function encodeVideo(file: string, output: string, onProgress: (progress: number, time: number) => void, onComplete: (time: number) => void) {

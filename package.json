@@ -27,7 +27,11 @@
     "productName": "Video Encoder",
     "files": [
       "dist/**/*",
-      "public/**/*"
+      "public/**/*",
+      "node_modules/ffmpeg-static/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/ffmpeg-static"
     ],
     "directories": {
       "buildResources": "assets"
