@@ -43,6 +43,6 @@
     "linux": {
       "target": "AppImage"
     },
-    "publish": "never"
+    "publish": null
   }
 }
