@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; img-src 'self' data:;" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Video Encoder</title>
     <link rel="stylesheet" href="style.css" />
@@ -10,8 +11,27 @@
     <script src="../dist/renderer/renderer.js" defer></script>
 </head>
 <body>
-    <h1>Drop videos to encode</h1>
-    <div id="dropZone">Drop your video files here or click to select</div>
-    <ul id="videoList"></ul>
+    <div id="errorBanner" role="alert" aria-live="polite" hidden>
+        <span class="error-message"></span>
+        <button type="button" class="error-close" aria-label="Dismiss">×</button>
+    </div>
+    <main>
+        <header class="app-header">
+            <h1>Drop videos to encode</h1>
+            <label class="concurrency">
+                <span>Parallel encodes</span>
+                <select id="concurrencySelect">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </label>
+        </header>
+        <div id="dropZone" role="button" tabindex="0" aria-label="Drop video files here or click to select">
+            Drop your video files here or click to select
+        </div>
+        <ul id="videoList"></ul>
+    </main>
 </body>
 </html>

@@ -1,64 +1,152 @@
+:root {
+    --bg: #121212;
+    --surface: #1e1e1e;
+    --surface-2: #262626;
+    --border: #3a3a3a;
+    --text: #eaeaea;
+    --text-muted: #aaaaaa;
+    --accent: #1db954;
+    --danger: #e63946;
+    --danger-hover: #d62828;
+    --warn: #f0a202;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: #eee;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
     margin: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+main {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.app-header {
+    display: flex;
     align-items: center;
-    height: 100vh;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 h1 {
-    margin-bottom: 1rem;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.concurrency {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.concurrency select {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+.concurrency select:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.25);
 }
 
 #dropZone {
-    border: 3px dashed #888;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    height: 200px;
+    border: 2px dashed #555;
+    border-radius: 12px;
+    padding: 2.5rem 1rem;
+    min-height: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #888;
-    font-size: 1.2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: border-color 0.3s ease, color 0.3s ease;
-    margin: 1rem 0;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    margin-bottom: 1.5rem;
+    user-select: none;
+}
+
+#dropZone:hover {
+    border-color: #888;
+    color: var(--text);
+}
+
+#dropZone:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    color: var(--text);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.25);
 }
 
 #dropZone.dragover {
-    border-color: #1db954;
-    color: #1db954;
-    background-color: #222;
+    border-color: var(--accent);
+    color: var(--accent);
+    background-color: rgba(29, 185, 84, 0.08);
 }
 
 #videoList {
     display: flex;
     flex-direction: column-reverse;
-
-    width: 80%;
-    max-width: 600px;
     list-style: none;
     padding: 0;
     margin: 0;
+    gap: 0.5rem;
 }
 
 #videoList li {
-    background: #222;
-    margin-bottom: 0.5rem;
-    padding: 10px;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.95rem;
-    overflow-wrap: break-word;
-
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    padding: 0.65rem 0.85rem;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+#videoList li .label {
+    flex: 1;
+    min-width: 0;
+}
+
+#videoList li.queued {
+    border-left-color: var(--text-muted);
+    background: var(--surface-2);
+}
+
+#videoList li.queued .progress {
+    color: var(--text-muted);
 }
 
 #videoList li div {
@@ -66,39 +154,116 @@ h1 {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
 #videoList li span.progress {
-    color: #1db954;
-    font-weight: bold;
+    color: var(--accent);
+    font-weight: 600;
+    min-width: 3ch;
+    text-align: right;
 }
 
 #videoList li span.time {
-    margin-left: 20px;
-
-    color: #bbb;
+    color: var(--text-muted);
     font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
 }
 
-
 #videoList li button {
-    background: #e63946;
+    background: var(--danger);
     border: none;
     color: white;
     padding: 4px 10px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s ease;
-
-    margin-left: 20px;
+    min-width: 90px;
 }
 
 #videoList li button:disabled {
-    background: #999;
+    background: #555;
     cursor: not-allowed;
 }
 
 #videoList li button:hover:not(:disabled) {
-    background: #d62828;
+    background: var(--danger-hover);
+}
+
+#videoList li button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.4);
+}
+
+#videoList li.done {
+    border-left-color: var(--accent);
+    background: var(--surface-2);
+    color: var(--text-muted);
+}
+
+#videoList li.error {
+    border-left-color: var(--warn);
+    background: var(--surface-2);
+    color: var(--text-muted);
+}
+
+#videoList li.cancelled {
+    border-left-color: var(--danger);
+    background: var(--surface-2);
+    color: var(--text-muted);
+}
+
+@keyframes flash {
+    0%   { background-color: rgba(29, 185, 84, 0.35); }
+    100% { background-color: var(--surface); }
+}
+
+#videoList li.flash {
+    animation: flash 0.8s ease-out;
+}
+
+#errorBanner {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    background: #3a1d1f;
+    border-bottom: 1px solid var(--danger);
+    color: #ffd9dc;
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+}
+
+#errorBanner[hidden] {
+    display: none;
+}
+
+#errorBanner .error-message {
+    overflow-wrap: anywhere;
+}
+
+#errorBanner .error-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    border-radius: 4px;
+}
+
+#errorBanner .error-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#errorBanner .error-close:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 217, 220, 0.5);
 }

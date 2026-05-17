@@ -16,6 +16,7 @@
     "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.28",
     "@types/node": "^20.14.9",
     "electron": "^37.2.0",
     "electron-builder": "^26.0.12",
