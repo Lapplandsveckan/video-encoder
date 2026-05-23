@@ -50,7 +50,13 @@ h1 {
     letter-spacing: 0.01em;
 }
 
-.concurrency {
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -58,7 +64,7 @@ h1 {
     font-size: 0.85rem;
 }
 
-.concurrency select {
+.control select {
     background: var(--surface);
     color: var(--text);
     border: 1px solid var(--border);
@@ -66,9 +72,10 @@ h1 {
     padding: 0.25rem 0.5rem;
     font: inherit;
     cursor: pointer;
+    max-width: 220px;
 }
 
-.concurrency select:focus-visible {
+.control select:focus-visible {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.25);
@@ -146,6 +153,21 @@ h1 {
 }
 
 #videoList li.queued .progress {
+    color: var(--text-muted);
+}
+
+#videoList li.uploading {
+    border-left-color: #4aa3df;
+    background: var(--surface);
+}
+
+#videoList li.uploading .progress {
+    color: #4aa3df;
+}
+
+#videoList li.uploaded {
+    border-left-color: var(--accent);
+    background: var(--surface-2);
     color: var(--text-muted);
 }
 
@@ -266,4 +288,93 @@ h1 {
 #errorBanner .error-close:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 217, 220, 0.5);
+}
+
+#passwordModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+#passwordModal[hidden] {
+    display: none;
+}
+
+#passwordModal .modal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    width: min(420px, 90vw);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#passwordModal h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#passwordModal .modal-body {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+#passwordModal #passwordServerName {
+    color: var(--text);
+    font-weight: 600;
+}
+
+#passwordModal input {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font: inherit;
+    margin-bottom: 1rem;
+}
+
+#passwordModal input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.25);
+}
+
+#passwordModal .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+#passwordModal button {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.4rem 0.9rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+#passwordModal button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #002a14;
+    font-weight: 600;
+}
+
+#passwordModal button:hover {
+    filter: brightness(1.1);
+}
+
+#passwordModal button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.35);
 }

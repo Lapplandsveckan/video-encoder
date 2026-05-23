@@ -4,6 +4,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
+import { maybeUpload } from './upload-coordinator';
 
 const DEFAULT_CONCURRENCY = 1;
 const MAX_CONCURRENCY = 8;
@@ -124,6 +125,7 @@ function startEncode(item: QueueItem) {
             activeEncodes.delete(filePath);
             safeSend(sender, 'encode-done', { file: filePath, output, time });
             drainQueue();
+            maybeUpload(sender, filePath, output);
         },
         (err) => {
             activeEncodes.delete(filePath);

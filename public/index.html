@@ -15,18 +15,37 @@
         <span class="error-message"></span>
         <button type="button" class="error-close" aria-label="Dismiss">×</button>
     </div>
+    <div id="passwordModal" role="dialog" aria-modal="true" aria-labelledby="passwordTitle" hidden>
+        <div class="modal-card">
+            <h2 id="passwordTitle">Password required</h2>
+            <p class="modal-body">Enter the password for <span id="passwordServerName"></span>:</p>
+            <input type="password" id="passwordInput" autocomplete="current-password" />
+            <div class="modal-actions">
+                <button type="button" id="passwordCancel">Cancel</button>
+                <button type="button" id="passwordSubmit" class="primary">Submit</button>
+            </div>
+        </div>
+    </div>
     <main>
         <header class="app-header">
             <h1>Drop videos to encode</h1>
-            <label class="concurrency">
-                <span>Parallel encodes</span>
-                <select id="concurrencySelect">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </label>
+            <div class="header-controls">
+                <label class="control">
+                    <span>Upload to</span>
+                    <select id="serverSelect">
+                        <option value="">None</option>
+                    </select>
+                </label>
+                <label class="control">
+                    <span>Parallel</span>
+                    <select id="concurrencySelect">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </label>
+            </div>
         </header>
         <div id="dropZone" role="button" tabindex="0" aria-label="Drop video files here or click to select">
             Drop your video files here or click to select

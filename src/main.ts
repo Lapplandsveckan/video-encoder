@@ -2,6 +2,10 @@ import {app, BrowserWindow, ipcMain, dialog, screen} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import './encode';
+import './upload-coordinator';
+import { startDiscovery, stopDiscovery, listServers } from './discovery';
+
+ipcMain.handle('list-servers', () => listServers());
 
 ipcMain.handle('pick-files', async () => {
     const result = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow()!, {
@@ -89,7 +93,14 @@ function createWindow() {
     win.loadFile(path.join(__dirname, '../public', 'index.html'));
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+    startDiscovery();
+    createWindow();
+});
+
+app.on('before-quit', () => {
+    stopDiscovery();
+});
 
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);

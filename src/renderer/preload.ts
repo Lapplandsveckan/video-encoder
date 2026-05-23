@@ -10,4 +10,5 @@ contextBridge.exposeInMainWorld('electron', {
 
     getPathForFile: (file: File) => webUtils.getPathForFile(file),
     pickFiles: async () => ipcRenderer.invoke('pick-files'),
+    listServers: async () => ipcRenderer.invoke('list-servers'),
 });
