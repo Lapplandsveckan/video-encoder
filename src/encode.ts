@@ -1,12 +1,20 @@
 import {app, ipcMain, WebContents} from 'electron';
 import ffmpegPath from 'ffmpeg-static';
 import ffmpeg from 'fluent-ffmpeg';
+import { spawn } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 
 const DEFAULT_CONCURRENCY = 1;
 const MAX_CONCURRENCY = 8;
+
+// Bump when encoder settings change in a way that would produce a different
+// output for the same input. Existing files tagged with an older version are
+// still considered "encoded" and won't be re-encoded — the version just lets
+// us surface a "v0 → v1" notice in the UI.
+const ENCODER_VERSION = 1;
+const METADATA_TAG = `video-encoder@${ENCODER_VERSION}`;
 
 function getSafeFfmpegPath(): string {
     if (!ffmpegPath) throw new Error('FFmpeg path is undefined');
@@ -47,7 +55,8 @@ export function encodeVideo(
             '-crf 18',
             '-preset slow',
             '-tune film',
-            '-movflags +faststart',
+            '-movflags +faststart+use_metadata_tags',
+            `-metadata`, `comment=${METADATA_TAG}`,
         ])
         .output(output)
         .on('end', () => {
@@ -75,6 +84,28 @@ let concurrencyLimit = DEFAULT_CONCURRENCY;
 
 function safeSend(sender: WebContents, channel: string, ...args: unknown[]) {
     if (!sender.isDestroyed()) sender.send(channel, ...args);
+}
+
+/** Inspect an input file's container metadata for our encoder tag.
+ *  Returns the version found, or null if the file wasn't produced by us. */
+function probeEncoderVersion(filePath: string): Promise<number | null> {
+    return new Promise((resolve) => {
+        const proc = spawn(getSafeFfmpegPath(), [
+            '-hide_banner',
+            '-loglevel', 'error',
+            '-i', filePath,
+            '-f', 'ffmetadata',
+            '-',
+        ], { stdio: ['ignore', 'pipe', 'ignore'] });
+
+        let buf = '';
+        proc.stdout.on('data', (c: Buffer) => { buf += c.toString('utf8'); });
+        proc.on('close', () => {
+            const m = buf.match(/^comment=video-encoder@(\d+)\s*$/m);
+            resolve(m ? parseInt(m[1], 10) : null);
+        });
+        proc.on('error', () => resolve(null));
+    });
 }
 
 function sanitizeBasename(filePath: string): string {
@@ -164,8 +195,18 @@ function isQueuedOrActive(filePath: string): boolean {
     return activeEncodes.has(filePath) || pendingQueue.some(p => p.filePath === filePath);
 }
 
-ipcMain.on('encode-video', (event, filePath: string) => {
+ipcMain.on('encode-video', async (event, filePath: string) => {
     if (isQueuedOrActive(filePath)) return;
+
+    const existingVersion = await probeEncoderVersion(filePath);
+    if (existingVersion !== null) {
+        safeSend(event.sender, 'encode-skipped', {
+            file: filePath,
+            version: existingVersion,
+            currentVersion: ENCODER_VERSION,
+        });
+        return;
+    }
 
     pendingQueue.push({ filePath, sender: event.sender });
     safeSend(event.sender, 'encode-queued', { file: filePath });

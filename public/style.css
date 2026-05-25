@@ -216,6 +216,12 @@ h1 {
     color: var(--text-muted);
 }
 
+#videoList li.skipped {
+    border-left-color: #6ea8d4;
+    background: var(--surface-2);
+    color: var(--text-muted);
+}
+
 @keyframes flash {
     0%   { background-color: rgba(29, 185, 84, 0.35); }
     100% { background-color: var(--surface); }

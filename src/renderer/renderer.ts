@@ -120,6 +120,21 @@ window.electron.on('encode-error', (event: any, data: { file: string; message: s
     fileToElement.delete(data.file);
 });
 
+window.electron.on('encode-skipped', (event: any, data: { file: string; version: number; currentVersion: number }) => {
+    const li = fileToElement.get(data.file);
+    if (!li) return;
+
+    li.classList.add('skipped');
+    const name = basename(data.file);
+    if (data.version === data.currentVersion) {
+        li.textContent = `✓ Already encoded (v${data.version}): ${name}`;
+    } else {
+        li.textContent = `ℹ️ Already encoded (v${data.version}, current v${data.currentVersion}): ${name}`;
+    }
+
+    fileToElement.delete(data.file);
+});
+
 window.electron.on('encode-cancelled', (event: any, filePath: string) => {
     const li = fileToElement.get(filePath);
     if (!li) return;
